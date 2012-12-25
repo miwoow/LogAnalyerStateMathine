@@ -1,0 +1,27 @@
+%start LogA::START
+%class LogAnaly
+
+%map LogA
+%%
+START {
+        get404(flag:TooMuch404, samp:ASample)  
+            [flag.isTriggered()]
+            END 
+                { trigger(flag); }
+        get404(flag:TooMuch404, samp:ASample)  
+            nil 
+                { keep(flag, samp); }
+        // 检测连续访问的状态机，对每个接受到的包都做处理
+        //getOnePkg(flag:QuickAccess, samp: ASample)
+        //    [flag.isTriggered()]
+        //    END
+        //        { trigger(flag); }
+        //getOnePkg(flag:QuickAccess, samp: ASample)
+        //    nil
+        //        { keep(flag, samp); }
+    }
+
+END {
+        get404 nil {}
+    }
+%%
