@@ -3,6 +3,5 @@
 public abstract class ASample
 {
 
-    public String source_ip;
 
 }

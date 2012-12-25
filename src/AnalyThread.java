@@ -20,7 +20,7 @@ public class AnalyThread extends Thread
         if (ip==null || logs==null){
             log.info("nothing to do");
         }
-        log.info("================"+ip+"("+logs.size()+")"+"================");
+        //log.info("================"+ip+"("+logs.size()+")"+"================");
 
         LogAnaly la = new LogAnaly(this.ip);
         la.setIp(ip);

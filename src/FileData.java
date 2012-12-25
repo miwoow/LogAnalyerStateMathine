@@ -4,6 +4,7 @@ import java.io.*;
 import java.util.regex.*;
 import java.util.LinkedList;
 import java.io.FileNotFoundException;
+import java.text.SimpleDateFormat;
 
 public class FileData implements IData
 {
@@ -23,6 +24,7 @@ public class FileData implements IData
         Pattern ptn = Pattern.compile("(\\d+.\\d+.\\d+.\\d+) .+ \\[(.+) \\+0800\\] \"(POST|GET) (.+) (HTTP/1\\.(1|0))\" (\\d{3}) (\\d+) \"(.+)\" \"(.+)\"");
         HashMap<String, List<LogModel>> ip_to_logs = new HashMap<String, List<LogModel>>();
         BufferedReader br = null;
+		SimpleDateFormat sdt =new SimpleDateFormat("dd/MMM/yyyy:HH:mm:ss");
         try {
             br = new BufferedReader(new FileReader(data_file));
             String line = null;
@@ -33,7 +35,12 @@ public class FileData implements IData
                 {
                     LogModel one_log = new LogModel();
                     one_log.source_ip = matcher.group(1);
-                    one_log.visit_time = matcher.group(2);
+					try {
+						one_log.visit_time = sdt.parse(matcher.group(2));
+					} catch(Exception dex)
+					{
+						dex.printStackTrace();
+					}
                     one_log.method = matcher.group(3);
                     one_log.url = matcher.group(4);
                     one_log.http_version = matcher.group(5);

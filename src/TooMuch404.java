@@ -9,23 +9,21 @@ public class TooMuch404 extends ARule
 {
     static Logger log = Logger.getLogger(QuickAccess.class);
 
+    private LinkedList<ASample> samples = new LinkedList<ASample>();  // 样本
+
     public TooMuch404()
     {
         maxNum = 3;
     }
 
-    public boolean isTriggered()
+    public boolean isTriggered(ASample samp)
     {
-        for(ASample s: samples)
-        {
-            System.out.println(s);
-        }
         return samples.size() >= maxNum;
     }
 
-    public void trigger()
+    public void trigger(ASample samp)
     {
-        log.warn(samples.peek().source_ip+" Too much 404.");
+        log.warn("samples.size()="+samples.size()+"=="+((LogModel)samples.peek()).source_ip+" Too much 404.");
         this.reset();
     }
 

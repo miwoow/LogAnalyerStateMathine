@@ -1,7 +1,8 @@
+import java.util.Date;
 
 public class LogModel extends ASample {
     public String source_ip;
-    String visit_time;
+    Date visit_time;
     String method;
     String url;
     String http_version;
