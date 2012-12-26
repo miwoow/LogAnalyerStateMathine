@@ -31,6 +31,10 @@
 
 SM_SOURCES=     LogAnaly.sm
 SOURCES=        $(SM_SOURCES:%.sm=%Context.java) \
+				FilterChain.java \
+				IFilter.java \
+				IpFilter.java \
+				StatusFilter.java \
                 ARule.java \
                 ASample.java \
                 IData.java \

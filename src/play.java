@@ -28,9 +28,15 @@ public class play
             ex1.printStackTrace();
             return;
         }
+		FilterChain fchain = new FilterChain();
+		IpFilter ipFilter = new IpFilter();
+		ipFilter.setIp("113.108.12.123");
+		fchain.add(ipFilter);
+		fd.setFilterChain(fchain);
         ip_to_logs = fd.getData();
 
         LinkedList<AnalyThread> threads = new LinkedList<AnalyThread>();
+
         
         for (Iterator it = ip_to_logs.keySet().iterator(); it.hasNext();)
         {

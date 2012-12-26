@@ -9,6 +9,7 @@ import java.text.SimpleDateFormat;
 public class FileData implements IData
 {
     public File data_file;
+	public FilterChain fchain;
 
     public FileData(String file_path) throws FileNotFoundException
     {
@@ -18,6 +19,11 @@ public class FileData implements IData
             throw new FileNotFoundException(data_file+" is not exists.");
         }
     }
+
+	public void setFilterChain(FilterChain chain)
+	{
+		this.fchain = chain;
+	}
 
     public HashMap<String, List<LogModel>> getData()
     {
@@ -48,14 +54,22 @@ public class FileData implements IData
                     one_log.body_length = Integer.parseInt(matcher.group(8));
                     one_log.refer = matcher.group(9);
                     one_log.user_agent = matcher.group(10);
-                    if (ip_to_logs.containsKey(one_log.source_ip)){
-                        List<LogModel> logs = ip_to_logs.get(one_log.source_ip);
-                        logs.add(one_log);
-                    } else {
-                        List<LogModel> logs = new LinkedList<LogModel>();
-                        logs.add(one_log);
-                        ip_to_logs.put(one_log.source_ip, logs);
-                    }
+
+					if (this.fchain != null)
+					{
+						if (this.fchain.doFilter(one_log)) {
+							if (ip_to_logs.containsKey(one_log.source_ip)){
+								List<LogModel> logs = ip_to_logs.get(one_log.source_ip);
+								logs.add(one_log);
+							} else {
+								List<LogModel> logs = new LinkedList<LogModel>();
+								logs.add(one_log);
+								ip_to_logs.put(one_log.source_ip, logs);
+							}		
+						}
+					}
+
+                    
                 }
             }
         } catch(FileNotFoundException e)
