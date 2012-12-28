@@ -15,13 +15,15 @@ public class LogAnaly
         this.ip = "["+ip+"]";
     }
 
-    public void AnalyOneLog(LogModel lm)
+    public void AnalyOneLog(ASample lm)
     {
 		_fsm.getOnePkg(qa_plugin, lm);
+		/*
         if(lm.status==404)
         {
             _fsm.get404(t4_plugin, lm);
         }
+		*/
     }
 
     public void trigger(ARule flag, ASample samp)

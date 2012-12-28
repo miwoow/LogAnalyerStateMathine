@@ -5,11 +5,11 @@ import org.apache.log4j.Logger;
 public class AnalyThread extends Thread
 {
     private String ip;
-    private List<LogModel> logs;
+    private List<ASample> logs;
 
     static Logger log = Logger.getLogger(AnalyThread.class);;
 
-    public AnalyThread(String ip, List<LogModel> logs)
+    public AnalyThread(String ip, List<ASample> logs)
     {
         this.ip = ip;
         this.logs = logs;
@@ -25,7 +25,7 @@ public class AnalyThread extends Thread
         LogAnaly la = new LogAnaly(this.ip);
         la.setIp(ip);
 
-        for(LogModel lm : logs){
+        for(ASample lm : logs){
             la.AnalyOneLog(lm);
         }
     }
@@ -35,7 +35,7 @@ public class AnalyThread extends Thread
         this.ip = ip;
     }
 
-    public void setLogs(List<LogModel> logs)
+    public void setLogs(List<ASample> logs)
     {
         this.logs = logs;
     }
@@ -45,7 +45,7 @@ public class AnalyThread extends Thread
         return ip;
     }
 
-    public List<LogModel> getLogs()
+    public List<ASample> getLogs()
     {
         return logs;
     }

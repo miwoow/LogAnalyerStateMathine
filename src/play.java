@@ -12,7 +12,7 @@ public class play
         
     public static void main(String args[])
     {
-        HashMap<String, List<LogModel>> ip_to_logs = null;
+        HashMap<String, List<ASample>> ip_to_logs = null;
         log.info("log file is "+args[0]);
         File logFile = new File(args[0]);
 
@@ -33,6 +33,7 @@ public class play
 		ipFilter.setIp("113.108.12.123");
 		fchain.add(ipFilter);
 		fd.setFilterChain(fchain);
+		fd.setClassifier(new IpClassifier());
         ip_to_logs = fd.getData();
 
         LinkedList<AnalyThread> threads = new LinkedList<AnalyThread>();
@@ -41,7 +42,7 @@ public class play
         for (Iterator it = ip_to_logs.keySet().iterator(); it.hasNext();)
         {
             String ip = (String)it.next();
-            List<LogModel> logs = (List<LogModel>)ip_to_logs.get(ip);
+            List<ASample> logs = (List<ASample>)ip_to_logs.get(ip);
             AnalyThread analyThread = new AnalyThread(ip, logs);
             analyThread.start();
             threads.add(analyThread);

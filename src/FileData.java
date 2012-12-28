@@ -10,6 +10,7 @@ public class FileData implements IData
 {
     public File data_file;
 	public FilterChain fchain;
+	private IClassifier classifier; // 分类器
 
     public FileData(String file_path) throws FileNotFoundException
     {
@@ -18,17 +19,22 @@ public class FileData implements IData
         {
             throw new FileNotFoundException(data_file+" is not exists.");
         }
+		this.classifier = new DefaultClassifier();
     }
+
+	public void setClassifier(IClassifier classifier)
+	{
+		this.classifier = classifier;
+	}
 
 	public void setFilterChain(FilterChain chain)
 	{
 		this.fchain = chain;
 	}
 
-    public HashMap<String, List<LogModel>> getData()
+    public HashMap<String, List<ASample>> getData()
     {
         Pattern ptn = Pattern.compile("(\\d+.\\d+.\\d+.\\d+) .+ \\[(.+) \\+0800\\] \"(POST|GET) (.+) (HTTP/1\\.(1|0))\" (\\d{3}) (\\d+) \"(.+)\" \"(.+)\"");
-        HashMap<String, List<LogModel>> ip_to_logs = new HashMap<String, List<LogModel>>();
         BufferedReader br = null;
 		SimpleDateFormat sdt =new SimpleDateFormat("dd/MMM/yyyy:HH:mm:ss");
         try {
@@ -58,18 +64,9 @@ public class FileData implements IData
 					if (this.fchain != null)
 					{
 						if (this.fchain.doFilter(one_log)) {
-							if (ip_to_logs.containsKey(one_log.source_ip)){
-								List<LogModel> logs = ip_to_logs.get(one_log.source_ip);
-								logs.add(one_log);
-							} else {
-								List<LogModel> logs = new LinkedList<LogModel>();
-								logs.add(one_log);
-								ip_to_logs.put(one_log.source_ip, logs);
-							}		
+							this.classifier.add(one_log);
 						}
 					}
-
-                    
                 }
             }
         } catch(FileNotFoundException e)
@@ -88,6 +85,6 @@ public class FileData implements IData
                 }
             }
         }
-        return ip_to_logs;
+        return this.classifier.getResult();
     }
 }

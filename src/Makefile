@@ -31,6 +31,9 @@
 
 SM_SOURCES=     LogAnaly.sm
 SOURCES=        $(SM_SOURCES:%.sm=%Context.java) \
+				IClassifier.java \
+				IpClassifier.java \
+				DefaultClassifier.java \
 				FilterChain.java \
 				IFilter.java \
 				IpFilter.java \
